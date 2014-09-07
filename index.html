@@ -1,0 +1,170 @@
+<!doctype html public>
+<!--[if lt IE 7]> <html lang="en-us" class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html lang="en-us" class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html lang="en-us" class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en-us"> <!--<![endif]-->
+<head>
+ 	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>WEDDING BOOK</title>
+
+ 	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+ 	<script type="text/javascript" src="js/modernizr/2.5.3/modernizr.min.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+
+    	<div id="header">
+    		<div class="header-wrapper">
+
+    		</div>
+		</div>
+        
+        <div id="inner-wrap">
+
+        	<div id="reading-pane-book">	
+				<div id="book-frontcover" class="hard tmp-page-holder"></div>
+					
+				<!-- fill these two with bob and bof 
+				<div id="book-bof" class="hard tmp-page-holder">back of front</div>
+				<div id="book-bob" class="hard tmp-page-holder">back of back</div> 
+
+				<div id="book-backcover" class="hard tmp-page-holder"></div>-->
+			</div>
+
+        	
+        </div>
+
+        <div id="footer">
+
+        </div>
+    </div>
+
+	<script type="text/javascript">
+		if (typeof jQuery == 'undefined')
+		{
+	    	document.write(unescape('%3Cscript%20type%3D%22text%2Fjavascript%22%20src%3D%22js%2Fjquery%2F1.8.1%2Fjquery.min.js%3F1349884818%22%3E%3C%2Fscript%3E'));
+		}
+	</script>
+    <script type="text/javascript" src="js/turnjs/4/turn.min.js"></script>
+
+    <script type="text/javascript">
+
+    	var flipbook = null;
+
+    	function getRandomNumber() {
+			return Math.floor((Math.random()*1000000)+1);
+		}
+
+    	$(document).ready(function () {
+    		//alert('hihi');
+    		loadApp();
+    		buildTheBook();
+    		startLoop();
+    	});
+
+    	function loadApp() {
+
+			$("#reading-pane-book").turn({
+			    //autoCenter: true,
+			    width: 1340,
+			    height: 947,
+			    duration: 3000,
+			    
+			});
+			flipbook = $("#reading-pane-book");
+		}
+
+		function buildTheBook() {
+			var frontcover = $("#book-frontcover");
+
+			var maxpage = 28;
+
+			var image = new Image();
+	
+			// setup front						
+			image.src = "WEDDING BOOK/COVER FRONT.jpg";
+			$(image).css({
+				"height" : "100%",
+				"width" : "100%",
+			});
+			
+			frontcover.append(image);
+
+			//setup pages
+			for(page = 1; page <= maxpage; page++) {
+				if (page < 10) {
+					page = "0" + page;
+				}
+				var pagediv = $("<div />", {
+					id : "page" + page,
+
+				});
+
+				if (page == 1 || page == maxpage) {
+					pagediv.addClass("hard");
+				}
+
+				// add gradient then add image
+				var gradient = $("<div />");
+				gradient.addClass("gradient");
+				pagediv.append(gradient);
+
+
+				image = new Image();
+				image.src = "WEDDING BOOK/"+page+".jpg";
+				$(image).css({
+					"height" : "100%",
+					"width" : "100%",
+				});
+				
+				pagediv.append(image);
+				flipbook.turn("addPage", pagediv, flipbook.turn('pages')+1);
+			}
+
+			// setup back
+			var backcover = $("<div />", {
+				id : "book-backcover",
+				class : "hard tmp-page-holder bof"
+			});
+			image = new Image();
+			image.src = "WEDDING BOOK/COVER BACK.jpg";
+			$(image).css({
+				"height" : "100%",
+				"width" : "100%",
+			});
+			
+			backcover.append(image);
+			flipbook.turn("addPage", backcover, flipbook.turn('pages')+1);
+		}
+
+		var iFrequency = 10000; // expressed in miliseconds
+		var myInterval = 0;
+
+		// STARTS and Resets the loop if any
+		function startLoop() {
+    		if(myInterval > 0) clearInterval(myInterval);  // stop
+    		myInterval = setInterval( "doSomething()", iFrequency );  // run
+		}
+
+		function stopLoop() {
+			clearInterval(myInterval);  // stop
+		}
+
+		function doSomething()
+		{
+			currentPage = flipbook.turn('page');
+			console.log(currentPage);
+    		// (do something here)
+    		if (currentPage == 36) {
+    			stopLoop();
+    		} else {
+    			flipbook.turn('next');	
+    		}
+    		
+		}
+
+    </script>
+</body>
+</html>
